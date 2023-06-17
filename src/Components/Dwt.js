@@ -4,10 +4,14 @@ import Scanner from "./Scanner";
 import "./Dwt.css";
 import AutoFeeder from "./Auto-Feeder";
 import ShowUi from "./ShowUi";
+import PixelType from "./PixelType";
 const Dwt = (props) => {
   const [autoFeederEnabled, setAutoFeederEnabled] = useState(false);
   const [scanner, setScanner] = useState(null);
   const [showUI, setShowUI] = useState(false);
+  const [selectedPixelType, setSelectedPixelType] = useState(
+    Dynamsoft.DWT.EnumDWT_PixelType.TWPT_BW
+  );
   let DWObject = null;
   const [scannerSources, setScannerSources] = useState([]);
   let containerId = "dwtcontrolContainer";
@@ -80,6 +84,14 @@ const Dwt = (props) => {
     }
   };
 
+  const handlePixelTypeChange = (pixelType) => {
+    setSelectedPixelType(pixelType);
+
+    if (scanner) {
+      scanner.PixelType = pixelType; // Set the selected pixel type
+    }
+  };
+
   const handleScan = () => {
     // Use Dynamic Web TWAIN API to scan images
     let obj = Dynamsoft.DWT.GetWebTwain(containerId);
@@ -99,6 +111,10 @@ const Dwt = (props) => {
               onToggleAutoFeeder={handleToggleAutoFeeder}
             />
           </div>
+          <PixelType
+            selectedPixelType={selectedPixelType}
+            onPixelTypeChange={handlePixelTypeChange}
+          />
           <div>
             <button onClick={handleScan}>Scan</button>
           </div>
