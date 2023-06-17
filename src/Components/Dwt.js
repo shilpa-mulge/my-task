@@ -91,6 +91,7 @@ const Dwt = (props) => {
 
   const handleToggleAutoFeeder = (enabled) => {
     setAutoFeederEnabled(enabled);
+    const scanner = Dynamsoft.DWT.GetWebTwain("dwtcontrolContainer");
     if (scanner) {
       // Enable or disable the AutoFeeder based on the checkbox state
       scanner.IfAutoFeed = enabled;
@@ -99,7 +100,7 @@ const Dwt = (props) => {
 
   const handlePixelTypeChange = (pixelType) => {
     setSelectedPixelType(pixelType);
-
+    const scanner = Dynamsoft.DWT.GetWebTwain("dwtcontrolContainer");
     if (scanner) {
       scanner.PixelType = pixelType; // Set the selected pixel type
     }
@@ -111,28 +112,23 @@ const Dwt = (props) => {
     setSelectedResolution(event.target.value);
   };
 
-  /*  const handleScan = () => {
-    // Use Dynamic Web TWAIN API to scan images
-    let obj = Dynamsoft.DWT.GetWebTwain(containerId);
-    obj.IfShowUI = showUI;
-    obj.AcquireImage();
-  }; */
-
   // Handle the scan and save functionality
   const scanAndSave = () => {
     const scanner = Dynamsoft.DWT.GetWebTwain("dwtcontrolContainer");
 
     // Acquire images from the scanner
     scanner.IfShowUI = showUI;
-    scanner.AcquireImage();
-
+    let imageCount = scanner.HowManyImagesInBuffer;
     // Save acquired images as a multi-page PDF
-    const result = scanner.SaveAllAsPDF("./output/result.pdf");
-    if (result) {
-      console.log("All Images saved as PDF.");
-    } else {
-      console.error("Failed to save All images as PDF.");
+    if (imageCount > 0) {
+      const result = scanner.SaveAllAsPDF("./output/result.pdf");
+      if (result) {
+        alert("All Images saved as PDF.");
+      } else {
+        alert("Failed to save All images as PDF.");
+      }
     }
+    scanner.AcquireImage();
   };
 
   // Handle the scan and save functionality
@@ -143,14 +139,16 @@ const Dwt = (props) => {
     let imageCount = dwObject.HowManyImagesInBuffer;
 
     // Save each scanned image as a separate PDF file
-    for (let i = 0; i < imageCount; i++) {
-      dwObject.SaveAsPDF(
-        "/output/" + (i + 1) + ".pdf",
-        i,
-        () => alert("Image saved as PDF."),
-        (errorCode, errorString) =>
-          alert("Error saving image as PDF:", errorCode, errorString)
-      );
+    if (imageCount > 0) {
+      for (let i = 0; i < imageCount; i++) {
+        dwObject.SaveAsPDF(
+          "/output/" + (i + 1) + ".pdf",
+          i,
+          () => alert("Image saved as PDF."),
+          (errorCode, errorString) =>
+            alert("Error saving image as PDF:", errorCode, errorString)
+        );
+      }
     }
     dwObject.AcquireImage();
   };
