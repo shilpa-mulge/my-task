@@ -5,10 +5,17 @@ const ShowUi = ({ showUI, setShowUI }) => {
     setShowUI(event.target.checked);
   };
   return (
-    <label>
-      Show UI:
-      <input type="checkbox" checked={showUI} onChange={handleCheckboxChange} />
-    </label>
+    <div style={{ margin: "10px" }}>
+      <label htmlFor="Showui">
+        Show UI:
+        <input
+          id="Showui"
+          type="checkbox"
+          checked={showUI}
+          onChange={handleCheckboxChange}
+        />
+      </label>
+    </div>
   );
 };
 

@@ -4,12 +4,18 @@ import Dynamsoft from "dwt";
 const Scanner = (props) => {
   return (
     <>
-      <label htmlFor="scannerSelect" style={{ fontSize: "20px" }}>
-        Select source:
+      <label
+        htmlFor="scannerSelect"
+        style={{ fontSize: "30px", fontStyle: "italic" }}
+      >
+        Select Source:
       </label>
       <br />
 
-      <select id="scannerSelect" style={{ padding: "10px", margin: "10px" }}>
+      <select
+        id="scannerSelect"
+        style={{ padding: "10px", margin: "10px", borderRadius: "10px" }}
+      >
         {props.scanner.map((source, index) => (
           <option key={index} value={source}>
             {source}

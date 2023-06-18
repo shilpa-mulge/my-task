@@ -6,6 +6,8 @@ import AutoFeeder from "./Auto-Feeder";
 import ShowUi from "./ShowUi";
 import PixelType from "./PixelType";
 import Resulution from "./Resulution";
+import RemoveBlankImages from "./RemoveBlankImages";
+import RemoveAllImages from "./RemoveAllImages";
 const Dwt = (props) => {
   const containerRef = useRef(null);
   const [scanner, setScanner] = useState(null);
@@ -52,7 +54,12 @@ const Dwt = (props) => {
       Dynamsoft_OnReady();
 
       const scanner = Dynamsoft.DWT.GetWebTwain("dwtcontrolContainer");
-      scanner.OpenSource();
+      //styling
+      scanner.Viewer.selectedPageBackground = "rgb(242, 217, 217)";
+      scanner.Viewer.selectedPageBorder = "3px solid rgb(162, 100, 100)";
+      scanner.Viewer.cursor = "pointer";
+
+      //scanner.OpenSource();
       scanner.getCapabilities(
         function (result) {
           for (var i = 0; i < result.length; i++) {
@@ -77,12 +84,13 @@ const Dwt = (props) => {
     Dynamsoft.DWT.ProductKey =
       "t01016QAAAK70uaD7MrskBv8DDrqSb2mzh6iqQZCl9dGDleC8v65yKrtaTG3ICfitQRxEz3TUjcuug5KB5w7Z3eOlySkIWM4sDBqGxy90Ls0ZNeX5XPe8qdP4FkYL3VStmWrtBuZ1MDw=";
     Dynamsoft.DWT.ResourcesPath = "/dwt-resources";
+
     Dynamsoft.DWT.Containers = [
       {
         WebTwainId: "dwtObject",
         ContainerId: containerId,
         Width: "600px",
-        Height: "600px",
+        Height: "620px",
       },
     ];
 
@@ -156,12 +164,17 @@ const Dwt = (props) => {
   return (
     <>
       <div className="main">
-        <div id={containerId} ref={containerRef}>
+        <div className="container" id={containerId} ref={containerRef}>
           {" "}
         </div>
-        <div>
+        <div className="second">
           <Scanner scanner={scannerSources} id={containerId} />
-          <div style={{ display: "flex", justifyContent: "space-around" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+            }}
+          >
             <ShowUi setShowUI={setShowUI} />
             <AutoFeeder
               autoFeederEnabled={autoFeederEnabled}
@@ -177,12 +190,14 @@ const Dwt = (props) => {
             selectedResolution={selectedResolution}
             onChange={handleResolutionChange}
           />
-          <div>
+          <div style={{ margin: "10px" }}>
             <button onClick={scanAndSave}>Scan and Save 1</button>
           </div>
-          <div>
+          <div style={{ margin: "10px" }}>
             <button onClick={scanAndSave2}>Scan and Save 2</button>
           </div>
+          <RemoveBlankImages containerId={containerId} />
+          <RemoveAllImages containerId={containerId} />
         </div>
       </div>
     </>

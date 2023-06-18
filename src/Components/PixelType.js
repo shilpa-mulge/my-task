@@ -7,7 +7,7 @@ const PixelType = ({ selectedPixelType, onPixelTypeChange }) => {
 
   return (
     <>
-      <h5>Pixel Type:</h5>
+      <div style={{ marginTop: "10px" }}>Pixel Type:</div>
       <div
         style={{
           display: "flex",

@@ -5,7 +5,7 @@ const AutoFeeder = ({ autoFeederEnabled, onToggleAutoFeeder }) => {
   };
 
   return (
-    <div>
+    <div style={{ margin: "10px" }}>
       <label>
         AutoFeeder:
         <input
